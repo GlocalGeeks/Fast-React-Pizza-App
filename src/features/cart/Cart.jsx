@@ -24,7 +24,7 @@ const fakeCart = [
   },
 ];
 
-function Cart() {
+const Cart = ()=> {
   const cart = fakeCart;
 
   return (

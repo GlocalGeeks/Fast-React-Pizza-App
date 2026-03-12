@@ -30,7 +30,7 @@ const fakeCart = [
   },
 ];
 
-function CreateOrder() {
+const CreateOrder = ()=> {
   // const [withPriority, setWithPriority] = useState(false);
   const cart = fakeCart;
 
