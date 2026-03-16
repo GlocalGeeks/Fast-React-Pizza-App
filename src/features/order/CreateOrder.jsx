@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Form, redirect, useActionData, useNavigation } from 'react-router-dom';
 import { createOrder } from '../../services/apiRestaurant';
+import Button from '../../ui/Button';
 
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) =>
@@ -45,13 +46,13 @@ const CreateOrder = () => {
       <Form method="POST">
         <div>
           <label>First Name</label>
-          <input type="text" name="customer" required />
+          <input className="md:px-6 md:py-3 w-full bg-white rounded-full border border-stone-200 px-4 py-2 text-sm tracking-all duration-300 placeholder:text-stone-400 focus:outline-none focus:ring focus:ring-yellow-400 " type="text" name="customer" required />
         </div>
 
         <div>
           <label>Phone number</label>
           <div>
-            <input type="tel" name="phone" required />
+            <input className="md:px-6 md:py-3 w-full bg-white rounded-full border border-stone-200 px-4 py-2 text-sm tracking-all duration-300 placeholder:text-stone-400 focus:outline-none focus:ring focus:ring-yellow-400 " type="tel" name="phone" required />
           </div>
           {formErrors?.phone && <p>{formErrors.phone}</p>}
         </div>
@@ -59,12 +60,13 @@ const CreateOrder = () => {
         <div>
           <label>Address</label>
           <div>
-            <input type="text" name="address" required />
+            <input className="md:px-6 md:py-3 w-full bg-white rounded-full border border-stone-200 px-4 py-2 text-sm tracking-all duration-300 placeholder:text-stone-400 focus:outline-none focus:ring focus:ring-yellow-400 " type="text" name="address" required />
           </div>
         </div>
 
         <div>
           <input
+            className='h-6 w-6 accent-yellow-400 focus:outline-none focus:ring focus:ring-yellow-400 focus:ring-offset-2'
             type="checkbox"
             name="priority"
             id="priority"
@@ -76,12 +78,8 @@ const CreateOrder = () => {
 
         <div>
           <input type="hidden" name="cart" value={JSON.stringify(cart)} />
-          <button
-            className="inline-block cursor-pointer rounded-full bg-yellow-400 px-4 py-3 font-semibold tracking-wide uppercase transition-colors duration-300 text-shadow-stone-800 hover:bg-yellow-300 focus:ring focus:ring-yellow-300 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? 'Placing Order' : 'Order Now'}
-          </button>
+          <Button disabled={isSubmitting}>{isSubmitting ? 'Placing Order' : 'Order Now'}</Button>
+          
         </div>
       </Form>
     </div>

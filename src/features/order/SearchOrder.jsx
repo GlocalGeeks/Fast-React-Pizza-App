@@ -13,7 +13,7 @@ const SearchOrder = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-        <input className="border p-2 border-stone-800/80" placeholder="Search order #" value={query} onChange={e=> setQuery(e.target.value)} />
+        <input className="transition-all duration-300 sm:focus:w-72 focus:border-stone-800/20 rounded-full text-sm bg-yellow-100 placeholder:text-stone-400  border p-2 border-stone-800/30 focus:outline-none focus:ring focus:ring-yellow-500 sm:w-64" placeholder="Search order #" value={query} onChange={e=> setQuery(e.target.value)} />
     </form>
   );
 };
