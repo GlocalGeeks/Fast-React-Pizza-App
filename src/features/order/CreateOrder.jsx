@@ -40,31 +40,31 @@ const CreateOrder = () => {
   const isSubmitting = navigation.state === 'submitting';
   const formErrors = useActionData();
   return (
-    <div>
-      <h2>Ready to order? Let's go!</h2>
+    <div className='px-4 px-6'>
+      <h2 className='text-xl font-semibold mb-8'>Ready to order? Let's go!</h2>
 
       <Form method="POST">
-        <div>
-          <label>First Name</label>
-          <input className="md:px-6 md:py-3 w-full bg-white rounded-full border border-stone-200 px-4 py-2 text-sm tracking-all duration-300 placeholder:text-stone-400 focus:outline-none focus:ring focus:ring-yellow-400 " type="text" name="customer" required />
+        <div className='mb-5 flex gap-2 flex-col sm:flex-row sm:items-center'>
+          <label className='sm:basis-30'>First Name</label>
+          <input className="grow md:px-6 md:py-3 bg-white rounded-full border border-stone-200 px-4 py-2 text-sm tracking-all duration-300 placeholder:text-stone-400 focus:outline-none focus:ring focus:ring-yellow-400 " type="text" name="customer" required />
         </div>
 
-        <div>
-          <label>Phone number</label>
-          <div>
+        <div className='mb-5 flex gap-2 flex-col sm:flex-row sm:items-center'>
+          <label className='sm:basis-30'>Phone number</label>
+          <div className='grow'>
             <input className="md:px-6 md:py-3 w-full bg-white rounded-full border border-stone-200 px-4 py-2 text-sm tracking-all duration-300 placeholder:text-stone-400 focus:outline-none focus:ring focus:ring-yellow-400 " type="tel" name="phone" required />
           </div>
-          {formErrors?.phone && <p>{formErrors.phone}</p>}
+          {formErrors?.phone && <p className='text-xs mt-2 text-red-700 bg-red-100 p-2 rounded-md'>{formErrors.phone}</p>}
         </div>
 
-        <div>
-          <label>Address</label>
-          <div>
-            <input className="md:px-6 md:py-3 w-full bg-white rounded-full border border-stone-200 px-4 py-2 text-sm tracking-all duration-300 placeholder:text-stone-400 focus:outline-none focus:ring focus:ring-yellow-400 " type="text" name="address" required />
+        <div className='mb-5 flex gap-2 flex-col sm:flex-row sm:items-center'>
+          <label className='sm:basis-30'>Address</label>
+          <div className='grow'>
+            <input className="md:px-6 w-full md:py-3 bg-white rounded-full border border-stone-200 px-4 py-2 text-sm tracking-all duration-300 placeholder:text-stone-400 focus:outline-none focus:ring focus:ring-yellow-400 " type="text" name="address" required />
           </div>
         </div>
 
-        <div>
+        <div className='mb-12 flex gap-5 items-center'>
           <input
             className='h-6 w-6 accent-yellow-400 focus:outline-none focus:ring focus:ring-yellow-400 focus:ring-offset-2'
             type="checkbox"
@@ -73,7 +73,7 @@ const CreateOrder = () => {
             // value={withPriority}
             // onChange={(e) => setWithPriority(e.target.checked)}
           />
-          <label htmlFor="priority">Want to yo give your order priority?</label>
+          <label className='font-medium' htmlFor="priority">Want to yo give your order priority?</label>
         </div>
 
         <div>
