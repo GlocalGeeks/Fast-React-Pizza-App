@@ -3,15 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   // cart: [],
 
-  cart: [
-    {
-      pizzaId: 12,
-      name: 'BBQ Tikka',
-      quanity: 2,
-      unitPrice: 16,
-      totalPrice: 32,
-    },
-  ],
+  cart: [],
 };
 
 const cartSlice = createSlice({
@@ -45,3 +37,9 @@ const cartSlice = createSlice({
 
 export const {addItem, deleteItem, increaseItemQuantity, decreaseItemQuantity, clearcart} = cartSlice.actions
 export default cartSlice.reducer
+
+export const getTotalCartQuantity = (state) =>
+    state.cart.cart.reduce((sum, item) => sum + item.quantity, 0);
+
+export const getTotalCartPrice = (state) =>
+    state.cart.cart.reduce((sum, item) => sum + item.totalPrice, 0); 
