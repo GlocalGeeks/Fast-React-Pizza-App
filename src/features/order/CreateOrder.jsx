@@ -41,59 +41,113 @@ const fakeCart = [
 
 const CreateOrder = () => {
   const [withPriority, setWithPriority] = useState(false);
-  const username = useSelector(state => state.user.username)
+  const {
+    username,
+    status: addressStatus,
+    position,
+    address,
+    error: errorAddress,
+  } = useSelector((state) => state.user);
+  const isLoadingAddress = addressStatus === 'loading';
   const cart = useSelector(getCart);
-  const totalCartPrice = useSelector(getTotalCartPrice)
+  const totalCartPrice = useSelector(getTotalCartPrice);
   const priorityPrice = withPriority ? totalCartPrice * 0.2 : 0;
-  const totalPrice = totalCartPrice + priorityPrice
+  const totalPrice = totalCartPrice + priorityPrice;
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';
   const formErrors = useActionData();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  if(!cart.length) return <EmptyCart />
+  if (!cart.length) return <EmptyCart />;
   return (
-    <div className='px-4 px-6'>
-      <h2 className='text-xl font-semibold mb-8'>Ready to order? Let's go!</h2>
-      <button onClick={()=> dispatch(fetchAddress())}>Get Position </button>
+    <div className="px-4 px-6">
+      <h2 className="mb-8 text-xl font-semibold">Ready to order? Let's go!</h2>
       <Form method="POST">
-        <div className='mb-5 flex gap-2 flex-col sm:flex-row sm:items-center'>
-          <label className='sm:basis-30'>First Name</label>
-          <input defaultValue={`${username}`} className="grow md:px-6 md:py-3 bg-white rounded-full border border-stone-200 px-4 py-2 text-sm tracking-all duration-300 placeholder:text-stone-400 focus:outline-none focus:ring focus:ring-yellow-400 " type="text" name="customer" required />
-        </div>
-
-        <div className='mb-5 flex gap-2 flex-col sm:flex-row sm:items-center'>
-          <label className='sm:basis-30'>Phone number</label>
-          <div className='grow'>
-            <input className="md:px-6 md:py-3 w-full bg-white rounded-full border border-stone-200 px-4 py-2 text-sm tracking-all duration-300 placeholder:text-stone-400 focus:outline-none focus:ring focus:ring-yellow-400 " type="tel" name="phone" required />
-          </div>
-          {formErrors?.phone && <p className='text-xs mt-2 text-red-700 bg-red-100 p-2 rounded-md'>{formErrors.phone}</p>}
-        </div>
-
-        <div className='mb-5 flex gap-2 flex-col sm:flex-row sm:items-center'>
-          <label className='sm:basis-30'>Address</label>
-          <div className='grow'>
-            <input className="md:px-6 w-full md:py-3 bg-white rounded-full border border-stone-200 px-4 py-2 text-sm tracking-all duration-300 placeholder:text-stone-400 focus:outline-none focus:ring focus:ring-yellow-400 " type="text" name="address" required />
-          </div>
-        </div>
-
-        <div className='mb-12 flex gap-5 items-center'>
+        <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
+          <label className="sm:basis-30">First Name</label>
           <input
-            className='h-6 w-6 accent-yellow-400 focus:outline-none focus:ring focus:ring-yellow-400 focus:ring-offset-2'
+            defaultValue={`${username}`}
+            className="tracking-all grow rounded-full border border-stone-200 bg-white px-4 py-2 text-sm duration-300 placeholder:text-stone-400 focus:ring focus:ring-yellow-400 focus:outline-none md:px-6 md:py-3"
+            type="text"
+            name="customer"
+            required
+          />
+        </div>
+
+        <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
+          <label className="sm:basis-30">Phone number</label>
+          <div className="grow">
+            <input
+              className="tracking-all w-full rounded-full border border-stone-200 bg-white px-4 py-2 text-sm duration-300 placeholder:text-stone-400 focus:ring focus:ring-yellow-400 focus:outline-none md:px-6 md:py-3"
+              type="tel"
+              name="phone"
+              required
+            />
+          </div>
+          {formErrors?.phone && (
+            <p className="mt-2 rounded-md bg-red-100 p-2 text-xs text-red-700">
+              {formErrors.phone}
+            </p>
+          )}
+        </div>
+
+        <div className="relative mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
+          <label className="sm:basis-30">Address</label>
+          <div className="grow">
+            <input
+              className="tracking-all w-full rounded-full border border-stone-200 bg-white px-4 py-2 text-sm duration-300 placeholder:text-stone-400 focus:ring focus:ring-yellow-400 focus:outline-none md:px-6 md:py-3"
+              type="text"
+              name="address"
+              disabled={isLoadingAddress}
+              required
+              defaultValue={address}
+            />
+
+            {addressStatus.errors && (
+              <p className="mt-2 rounded-md bg-red-100 p-2 text-xs text-red-700">
+                {errorAddress}
+              </p>
+            )}
+          </div>
+
+          {!position.latitude && !position.longitutde && (
+            <span className="absolute top-[3px] right-[3px] z-50 md:right-[5px] md:top-[5px]">
+              <Button
+                disabled={isLoadingAddress}
+                type="small"
+                onClick={(e) => {
+                  e.preventDefault();
+                  dispatch(fetchAddress());
+                }}
+              >
+                Get Position{' '}
+              </Button>
+            </span>
+          )}
+        </div>
+
+        <div className="mb-12 flex items-center gap-5">
+          <input
+            className="h-6 w-6 accent-yellow-400 focus:ring focus:ring-yellow-400 focus:ring-offset-2 focus:outline-none"
             type="checkbox"
             name="priority"
             id="priority"
             value={withPriority}
             onChange={(e) => setWithPriority(e.target.checked)}
           />
-          <label className='font-medium' htmlFor="priority">Want to yo give your order priority?</label>
+          <label className="font-medium" htmlFor="priority">
+            Want to yo give your order priority?
+          </label>
         </div>
 
         <div>
           <input type="hidden" name="cart" value={JSON.stringify(cart)} />
-          <Button type="primary" disabled={isSubmitting}>{isSubmitting ? 
-          'Placing Order' : `Order Now from ${formatCurrency(totalPrice)}`}</Button>
-          
+          <input type='hidden' name='position' value={position.longitutde && position.longitutde ? `${position.latitude}, ${position.longitutde}` : ""}  />
+          <Button type="primary" disabled={isSubmitting || isLoadingAddress}>
+            {isSubmitting
+              ? 'Placing Order'
+              : `Order Now from ${formatCurrency(totalPrice)}`}
+          </Button>
         </div>
       </Form>
     </div>
@@ -119,10 +173,9 @@ export async function action({ request }) {
   if (Object.keys(errors).length > 0) return errors;
 
   const newOrder = await createOrder(order);
-  store.dispatch(clearcart())
+  store.dispatch(clearcart());
 
   return redirect(`/order/${newOrder.id}`);
-
 }
 
 export default CreateOrder;
